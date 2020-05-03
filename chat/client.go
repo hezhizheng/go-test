@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 var (
@@ -41,13 +42,6 @@ func main() {
 		os.Exit(0)
 	}
 
-	//if string(writeStr) == ""{
-	//	os.Exit(1)
-	//}
-	//
-	//// 通知服务端
-	//conn.Write(writeStr)
-
 	// 一定得用协程！！！ 获取服务端的消息
 	go read(conn)
 
@@ -69,18 +63,19 @@ func main() {
 	}
 
 
-
-	//scanner := bufio.NewScanner(os.Stdin)
-	//for scanner.Scan() {
-	//	fmt.Println(scanner.Text())
-	//}
-
-
 }
 
 func read(conn net.Conn)  {
 	for  {
-		conn.Read(readStr)
-		fmt.Println(string(readStr))
+		_, err := conn.Read(readStr)
+		if err != nil {
+			fmt.Printf("Client quit.\n")
+			conn.Close()
+			return
+		}
+
+		msg := string(readStr)
+		msg = strings.Replace(msg, "\r\n", "", -1)
+		fmt.Println(msg)
 	}
 }

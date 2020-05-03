@@ -5,7 +5,6 @@ import (
 	"log"
 	"net"
 	"os"
-	"strings"
 )
 
 const (
@@ -27,7 +26,7 @@ func main() {
 		os.Exit(0)
 	}
 	defer listener.Close()
-	log.Println("tcp server start", data)
+	log.Println("tcp server start")
 
 	// 处理客户端的连接
 	for {
@@ -60,7 +59,7 @@ func main() {
 
 			name := string(data) + "(" + ClientRemoteAddr + ")"
 
-			name = strings.Replace(name, "\r\n", "", -1)
+			//name = strings.Replace(name, "\r\n", "", -1)
 
 			conn.Write([]byte("欢迎你，" + name))
 
@@ -79,7 +78,7 @@ func main() {
 				}
 				res := string(data)
 
-				sprdMsg := name + " said：" + res
+				sprdMsg := name + "：" + res
 				fmt.Println(sprdMsg)
 				res = "我：" + res
 				conn.Write([]byte(res))
