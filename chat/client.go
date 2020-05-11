@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	// 定义写入跟读取服务端的消息体
 	writeStr, readStr = make([]byte, 1024), make([]byte, 1024)
 )
 
@@ -17,6 +18,7 @@ func main() {
 	var (
 		host = "127.0.0.1"
 		port = "9220"
+		// 获取用户在终端的输入
 		reader = bufio.NewReader(os.Stdin)
 	)
 
@@ -47,6 +49,11 @@ func main() {
 
 	// todo main 下不能有两个或以上 for{} !!!
 	// 将客户端的输入通知服务端
+	readLineWrite(reader, conn)
+
+}
+
+func readLineWrite(reader *bufio.Reader, conn net.Conn) {
 	for {
 		//fmt.Printf("：")
 		writeStr, _, _ = reader.ReadLine()
@@ -61,8 +68,6 @@ func main() {
 			os.Exit(0)
 		}
 	}
-
-
 }
 
 func read(conn net.Conn)  {

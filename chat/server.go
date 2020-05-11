@@ -12,9 +12,11 @@ const (
 	port = "9220"
 )
 
-// 存放所有连接的客户端
+
 var (
+	// 存放所有连接的客户端
 	clients []net.Conn
+	// 读取客户端的消息体
 	data    = make([]byte, 1024)
 )
 
@@ -55,11 +57,8 @@ func main() {
 				disconnect(conn, conn.RemoteAddr().String())
 				return
 			}
-			//name := string(data[:length])
 
 			name := string(data) + "(" + ClientRemoteAddr + ")"
-
-			//name = strings.Replace(name, "\r\n", "", -1)
 
 			conn.Write([]byte("欢迎你，" + name))
 
@@ -89,6 +88,7 @@ func main() {
 	}
 }
 
+// 通知除自己的其他所有客户端
 func notify(conn net.Conn, msg string) {
 	for _, con := range clients {
 		if con.RemoteAddr() != conn.RemoteAddr() {
@@ -97,6 +97,7 @@ func notify(conn net.Conn, msg string) {
 	}
 }
 
+// 离开通知所有其他在线的客户端
 func disconnect(conn net.Conn, name string) {
 	for index, con := range clients {
 		if con.RemoteAddr() == conn.RemoteAddr() {
