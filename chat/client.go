@@ -67,6 +67,7 @@ func main() {
 
 func read(conn net.Conn)  {
 	for  {
+		// 这里需要捕捉错误，不然服务端连接关闭会进入死循环
 		_, err := conn.Read(readStr)
 		if err != nil {
 			fmt.Printf("Client quit.\n")
