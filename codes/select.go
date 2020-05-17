@@ -6,12 +6,12 @@ import (
 )
 
 func fn1(ch chan string) {
-    time.Sleep(time.Second * 3)
+    //time.Sleep(time.Second * 3)
     ch <- "fn1111"
 }
 
 func fn2(ch chan string) {
-    //time.Sleep(time.Second * 6)
+    time.Sleep(time.Second * 6)
     ch <- "fn2222"
 }
 
@@ -23,6 +23,7 @@ func main() {
     ch2 := make(chan string)
     go fn2(ch2)
 
+    // select 只支持 channel，case
     select {
     case r1 := <-ch1:
         fmt.Println("r1=", r1)

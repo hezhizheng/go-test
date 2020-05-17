@@ -1,33 +1,62 @@
 package main
 
 import (
-"fmt"
-"sync"
-"time"
+    "log"
+    "sync"
+    "time"
 )
 
 var wg sync.WaitGroup
 
-func main() {
+/*
+定义 sync
+*/
+func main2() {
     userCount := 10
-    ch := make(chan int, 500)
+
+    ch := make(chan int, 2)
+
     for i := 0; i < userCount; i++ {
         wg.Add(1)
-        go func() {
-            defer wg.Done()
-            for d := range ch {
-                fmt.Printf("go func: %d, time: %d\n", d, time.Now().Unix())
-                //time.Sleep(time.Second * time.Duration(d))
-            }
-        }()
+
+        go func(i int) {
+            ch <- i
+
+            c := i+1
+            time.Sleep(time.Second)
+            // 执行完之后
+            wg.Done()
+            d := <-ch
+
+            log.Println("ccccccccc",c,d)
+
+        }(i)
     }
 
-    for i := 0; i < 10; i++ {
-        ch <- 1
-        ch <- 2
-        //time.Sleep(time.Second)
+    wg.Wait()
+}
+
+func main()  {
+    ch := make(chan int,4)
+
+    count := 10
+
+    for i:=1;i<=count;i++ {
+        wg.Add(1)
+
+        go func(i int){
+            ch <- i
+
+            c := i + 1
+            // 模拟主程序执行处理时间
+            time.Sleep(time.Second)
+
+            d := <-ch
+            wg.Done()
+            log.Println(c,d)
+
+        }(i)
     }
 
-    close(ch)
     wg.Wait()
 }
