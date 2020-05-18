@@ -22,13 +22,13 @@ func main2() {
         go func(i int) {
             ch <- i
 
-            c := i+1
+            c := i + 1
             time.Sleep(time.Second)
             // 执行完之后
             wg.Done()
             d := <-ch
 
-            log.Println("ccccccccc",c,d)
+            log.Println("ccccccccc", c, d)
 
         }(i)
     }
@@ -36,15 +36,15 @@ func main2() {
     wg.Wait()
 }
 
-func main()  {
-    ch := make(chan int,4)
+func main() {
+    ch := make(chan int, 2)
 
     count := 10
 
-    for i:=1;i<=count;i++ {
+    for i := 1; i <= count; i++ {
         wg.Add(1)
 
-        go func(i int){
+        go func(i int) {
             ch <- i
 
             c := i + 1
@@ -53,7 +53,8 @@ func main()  {
 
             d := <-ch
             wg.Done()
-            log.Println(c,d)
+
+            log.Printf("%d + 1  = %d ，chan= %d ", i, c, d)
 
         }(i)
     }
