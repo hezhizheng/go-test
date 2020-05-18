@@ -64,7 +64,9 @@ func mainx() {
 }
 
 func main() {
+    // 用完协程池释放
     defer ants.Release()
+    // 定义一个协程池
     pool, _ := ants.NewPool(2)
 
     count := 10
@@ -81,6 +83,7 @@ func main() {
             time.Sleep(time.Second * 1)
         }
 
+        // 提交任务
         pool.Submit(func() {
             task()
             wg.Done()
