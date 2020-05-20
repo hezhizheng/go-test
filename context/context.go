@@ -117,5 +117,6 @@ func watch(ctx context.Context, name string) {
 func main() {
 	//ContextInterFace.main(&ChanSelect{})
 	//ContextInterFace.main(&ContextEntity{})
+	// todo 可以停止正在运行的goroutine，那么可以继续开启之前停止的 goroutine 吗
 	ContextInterFace.main(&Multiple{})
 }
