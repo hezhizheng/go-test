@@ -1,73 +1,77 @@
 package main
 
 import (
-    "io/ioutil"
-    "log"
-    "os"
-    "strings"
-    "sync"
-    "time"
+	"io/ioutil"
+	"log"
+	"os"
+	"strings"
+	"sync"
+	"time"
 )
 
 var wg = sync.WaitGroup{}
 
 func main() {
 
-    star := time.Now()
+	star := time.Now()
 
-    pathname := "C:\\E\\music"
+	pathname := "E:\\music22"
 
-    rd, err := ioutil.ReadDir(pathname)
+	rd, err := ioutil.ReadDir(pathname)
 
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 
-    channel := make(chan int, 10)
+	channel := make(chan int, 10)
 
-    for _, f := range rd {
-        wg.Add(1)
-        fileName := f.Name()
-        //log.Println(fileName, pathname+"\\"+fileName)
+	for _, f := range rd {
+		wg.Add(1)
+		fileName := f.Name()
+		//log.Println(fileName, pathname+"\\"+fileName)
 
-        go rename(pathname, fileName, channel)
+		go rename(pathname, fileName, channel)
 
-    }
+	}
 
-    wg.Wait()
+	wg.Wait()
 
-    end := time.Since(star)
+	end := time.Since(star)
 
-    log.Printf("任务完成，耗时 %f 秒", end.Seconds())
+	log.Printf("任务完成，耗时 %f 秒", end.Seconds())
 
 }
 
 // 陈百强 - 等.mp3 重命名为 陈百强-等.mp3
 func rename(path, f string, channel chan int) {
-    channel <- 1
-    // 重命名文件
-    file := f
+	channel <- 1
+	// 重命名文件
+	file := f
 
-    split := strings.Split(file, " - ")
+    //sep := " - "
 
-    // 大于1 才认为是需要重命名的
-    if len(split) > 1 {
-        //log.Println(split)
+    sep := "_-_"
 
-        oldPath := path + "\\" + file
+	split := strings.Split(file, sep)
 
-        newPath := path + "\\" + split[0] + "-" + split[1]
+	// 大于1 才认为是需要重命名的
+	if len(split) > 1 {
+		//log.Println(split)
 
-        err1 := os.Rename(oldPath, newPath)
-        if err1 != nil {
-            panic(err1)
-        } else {
-            log.Printf("文件 %s 重命名为=> %s ", oldPath, newPath)
-        }
-    }
+		oldPath := path + "\\" + file
 
-    // 模拟并发
-    //time.Sleep(time.Second * 1)
-    <-channel
-    wg.Done()
+		newPath := path + "\\" + split[0] + "-" + split[1]
+
+		err1 := os.Rename(oldPath, newPath)
+		if err1 != nil {
+			panic(err1)
+		} else {
+			log.Printf("文件 %s 重命名为=> %s ", oldPath, newPath)
+		}
+	}
+
+	// 模拟并发
+	//time.Sleep(time.Second * 1)
+	<-channel
+	wg.Done()
 }
