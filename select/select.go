@@ -6,7 +6,7 @@ import (
 )
 
 func fn1(ch chan string) {
-    //time.Sleep(time.Second * 3)
+    time.Sleep(time.Second * 3)
     ch <- "fn1111"
 }
 
