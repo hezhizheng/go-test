@@ -20,6 +20,7 @@ func (p *People) SetName(name string) {
 }
 
 func newPeople(name , Age string) *People {
+    // 通过 &People 引用语法来取得 People 的内存地址，即指向 People 的指针
     return &People{
         Name: name,
         Age:  Age,
