@@ -2,13 +2,14 @@ package main
 
 import (
 	"github.com/golang/protobuf/proto"
+	"go-test/protobuf"
 	"log"
 )
 
-// todo 路径好像不对
 func main() {
-	test := &Student{
-		Name: "geektutu",
+
+	test := &protobuf.Student{
+		Name: "hzz",
 		Male:  true,
 		Scores: []int32{98, 85, 88},
 	}
@@ -16,7 +17,7 @@ func main() {
 	if err != nil {
 		log.Fatal("marshaling error: ", err)
 	}
-	newTest := &Student{}
+	newTest := &protobuf.Student{}
 	err = proto.Unmarshal(data, newTest)
 	if err != nil {
 		log.Fatal("unmarshaling error: ", err)
@@ -25,4 +26,6 @@ func main() {
 	if test.GetName() != newTest.GetName() {
 		log.Fatalf("data mismatch %q != %q", test.GetName(), newTest.GetName())
 	}
+
+	log.Println(test.GetName(), newTest.GetName(),data,string(data))
 }

@@ -1,5 +1,6 @@
 syntax = "proto3";
 package main;
+option go_package = ".;protobuf"; //防止警告 Missing 'go_package' option
 
 
 // 定义消息类型
