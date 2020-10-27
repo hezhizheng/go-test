@@ -57,8 +57,13 @@ func (cal *Calculation) ExecRpc(req Req, res *Res) error {
 	return nil
 }
 
-func main2() {
-	cal := new(Calculation)
+func main() {
+	// make 关键字的作用是创建切片、哈希表和 Channel 等内置的数据结构，
+	//而 new 的作用是为类型申请一片内存空间，并返回指向这片内存的指针。与 var 没有啥区别 ，new返回的是指针, var 返回的是具体值
+
+	cal := new(Calculation) // => var cal Calculation
+	var varCal Calculation // => *cal
+	log.Println(varCal,cal,*cal)
 	val := cal.exec(12, 2)
 
 	log.Printf("%v^%v=%v", val.Num, val.Ans, val.Val)
@@ -76,7 +81,7 @@ func main3() {
 	log.Printf("%v^%v=%v", res.Num, res.Ans, res.Val)
 }
 
-func main() {
+func main5() {
 	rpc.Register(new(Calculation))
 	rpc.HandleHTTP()
 
