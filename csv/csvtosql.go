@@ -142,7 +142,9 @@ func GenerateInsertOrUpdateQuery(table string, columns []string, values [][]stri
 	for i, row := range values {
 		formattedValues := make([]string, len(row))
 		for j, v := range row {
-			formattedValues[j] = fmt.Sprintf(`"%s"`, strings.ReplaceAll(v, `"`, `\"`))
+			//formattedValues[j] = fmt.Sprintf(`"%s"`, strings.ReplaceAll(v, `"`, `\"`))
+			// 处理反斜杠
+			formattedValues[j] = fmt.Sprintf(`"%s"`, strings.ReplaceAll(strings.ReplaceAll(v, `"`, `\"`), "\\", "\\\\"))
 		}
 		valueStrings[i] = fmt.Sprintf("(%s)", strings.Join(formattedValues, ","))
 	}
