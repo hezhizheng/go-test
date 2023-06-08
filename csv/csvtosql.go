@@ -13,6 +13,8 @@ import (
 
 func main() {
 
+	// 打包 go build -ldflags "-s -w" -gcflags="all=-trimpath=${PWD}" -asmflags="all=-trimpath=${PWD}" csv/csvtosql.go
+
 	//table := "users"
 	//columns := []string{"id", "name", "email"}
 	//values := [][]string{
