@@ -31,25 +31,32 @@ func main() {
 	//	fmt.Println("Generated SQL query:", query)
 	//}
 
-	file := `C:\Users\DexterHo\Desktop\jd_copy1.csv`
-
+	//file := `C:\Users\DexterHo\Desktop\jd_copy1.csv`
+	//
 	args := os.Args
+	//
+	//if len(args) > 1 && args[1] != "" {
+	//	file = args[1]
+	//}
+	for k, file := range args {
 
-	if len(args) > 1 && args[1] != "" {
-		file = args[1]
+		if k == 0 {
+			continue
+		}
+
+		table := getPathInfo(file)
+
+		x, y, _ := readCSV(file)
+
+		sql, eee_ := GenerateInsertOrUpdateQuery(table["basename"], x, y, x)
+
+		filePath := "./" + table["basename"] + ".sql"
+		fileFormat := "%s"
+		saveStringToFile(sql, filePath, fileFormat)
+
+		log.Println(file+" 处理完成", x, eee_)
 	}
 
-	table := getPathInfo(file)
-
-	x, y, _ := readCSV(file)
-
-	sql, eee_ := GenerateInsertOrUpdateQuery(table["basename"], x, y, x)
-
-	filePath := "./" + table["basename"] + ".sql"
-	fileFormat := "%s"
-	saveStringToFile(sql, filePath, fileFormat)
-
-	log.Println(x, eee_)
 }
 
 func readCSV(file string) ([]string, [][]string, error) {
